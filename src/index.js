@@ -1,21 +1,38 @@
-import "./styles.css";
-import axios from "axios";
-document.getElementById("myName").innerHTML = "Hello, Gratian Muntean!";
+document.getElementById("title").innerHTML = "Hello, Oana!";
+document.getElementById("response").innerHTML = getResponse();
 
-const list = document.getElementById("unordered");
-const resp = axios
-  .get("https://5d93a214e020b300147dafad.mockapi.io/candies")
-  .then(res => {
-    console.log(res);
-    console.log(res.data);
-    if (res.data) {
-      res.data.map((el, i) => {
-        const element = document.createElement("LI");
-        const text = document.createTextNode(el.brand);
-        element.appendChild(text);
-        list.appendChild(element);
-      });
-    }
+function getResponse() {
+  const Http = new XMLHttpRequest();
+  const url = "https://5d93a214e020b300147dafad.mockapi.io/candies";
+  Http.open("GET", url);
+  Http.send();
 
-    return res.json();
-  });
+  Http.onreadystatechange = e => {
+    generateList(Http.responseText);
+    // document.getElementById("response").innerHTML = Http.responseText;
+  };
+}
+
+function getListFromJson(text) {
+  return JSON.parse(text);
+}
+
+function generateList(text) {
+  const listContainer = document.getElementById("response-ul");
+  const items = document.createElement("ul");
+  const list = getListFromJson(text);
+
+  for (var i = 0; i < list.length; i++) {
+    const id = document.createElement("li");
+    id.innerHTML = list[i].id;
+    items.appendChild(id);
+
+    const brand = document.createElement("li");
+    brand.innerHTML = list[i].brand;
+    items.appendChild(brand);
+
+    // document.getElementById("response").innerHTML = list[i].id;
+  }
+
+  listContainer.appendChild(items);
+}
