@@ -1,8 +1,19 @@
-import "./styles.css";
+import './styles.css';
 
-fetch('https://5d93a214e020b300147dafad.mockapi.io/candies')
-.then(response => response.json())
-.then(data => {
-  console.log(data) // Prints result from `response.json()` in getRequest
-})
-.catch(error => console.error(error))
+document.getElementById('myName').innerHTML = 'Alexandra Lincar';
+
+var chocolateObject;
+
+function getObject() {
+  chocolateObject = JSON.parse(this.responseText);
+  for (var i = 0; i < chocolateObject.length; i++) {
+    var li = document.createElement('li');
+    document.getElementById('unordered').appendChild(li);
+    li.innerHTML = li.innerHTML + chocolateObject[i].price;
+  }
+}
+
+var getResponse = new XMLHttpRequest();
+getResponse.addEventListener('load', getObject);
+getResponse.open('GET', 'https://5d93a214e020b300147dafad.mockapi.io/candies');
+getResponse.send();
